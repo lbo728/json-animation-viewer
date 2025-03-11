@@ -49,7 +49,7 @@ export default function Home() {
         animation.destroy();
       };
     }
-  }, [animationData]);
+  }, [animationData, containerRef]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
