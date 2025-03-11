@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Json Animation Viewer
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+Json Animation Viewer is a simple web application that allows users to upload Lottie JSON animation files and preview them while adjusting the animation size. Users can either drag and drop files or click a button to select a file.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Upload Lottie JSON animation files
+- Adjust animation size
+- Display the name of the selected file
+- Preview animation within a fixed viewport
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **React**: For building the user interface
+- **Lottie-web**: For rendering animations
+- **TypeScript**: For static type checking
+- **Tailwind CSS**: For styling
 
-## Learn More
+## Installation and Running
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the Repository**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone https://github.com/username/repo-name.git
+   cd repo-name
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install Dependencies**
 
-## Deploy on Vercel
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Run the Development Server**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in Browser**
+   Access the application at `http://localhost:3000` in your browser.
+
+## Usage
+
+1. Click the "Select File" button to upload a Lottie JSON file.
+2. The name of the uploaded file will be displayed.
+3. Use the slider to adjust the size of the animation.
+
+## Contributing
+
+If you would like to contribute, please fork this repository, make your changes, and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
