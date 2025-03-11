@@ -6,19 +6,13 @@ import lottie from "lottie-web";
 export default function Home() {
   const [animationData, setAnimationData] = useState<unknown>(null);
   const [animationSize, setAnimationSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
-  // const [viewPortDimensions, setViewPortDimensions] = useState<{ width: number; height: number }>({
-  //   width: 0,
-  //   height: 0,
-  // });
 
   const [fileName, setFileName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const updateViewportSize = () => {
-      // setViewportSize({ width: window.innerWidth, height: window.innerHeight });
-    };
+    const updateViewportSize = () => {};
 
     updateViewportSize();
     window.addEventListener("resize", updateViewportSize);
@@ -42,14 +36,13 @@ export default function Home() {
       if (typeof animationData === "object" && animationData !== null) {
         const { w, h } = animationData as { w: number; h: number };
         setAnimationSize({ width: w, height: h });
-        // setViewPortDimensions({ width: w, height: h });
       }
 
       return () => {
         animation.destroy();
       };
     }
-  }, [animationData, containerRef]);
+  }, [animationData]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
