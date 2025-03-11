@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { AnimationItem, LottiePlayer } from "lottie-web";
 
-// Animation data type definition
 interface AnimationData {
   w?: number;
   h?: number;
@@ -12,8 +11,13 @@ interface AnimationData {
 
 export default function Home() {
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
-  const [animationData, setAnimationData] = useState<AnimationData | null>(null);
-  const [animationSize, setAnimationSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+  const [animationData, setAnimationData] = useState<AnimationData | null>(
+    null
+  );
+  const [animationSize, setAnimationSize] = useState<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
 
   const [fileName, setFileName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,7 +25,6 @@ export default function Home() {
   const animationRef = useRef<AnimationItem | null>(null);
 
   useEffect(() => {
-    // Dynamically import lottie-web
     import("lottie-web")
       .then((lottieModule) => {
         setLottie(lottieModule.default);
@@ -42,7 +45,6 @@ export default function Home() {
 
   useEffect(() => {
     if (lottie && animationData && containerRef.current) {
-      // Remove previous animation if exists
       if (animationRef.current) {
         animationRef.current.destroy();
       }
@@ -123,12 +125,18 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <label className="mb-4">
         {fileName && <span className="mt-2 mr-2">{fileName}</span>}
-        <input type="file" accept=".json" onChange={handleFileUpload} className="hidden" ref={fileInputRef} />
+        <input
+          type="file"
+          accept=".json"
+          onChange={handleFileUpload}
+          className="hidden"
+          ref={fileInputRef}
+        />
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-900 transition-all"
           onClick={handleButtonClick}
         >
-          파일 선택
+          Select File
         </button>
       </label>
       <div
@@ -145,7 +153,8 @@ export default function Home() {
       ></div>
       <div className="mt-4">
         <p>
-          애니메이션 사이즈(뷰포트 포함): {animationSize.width} x {animationSize.height}
+          Animation Size(include viewport): {animationSize.width} x{" "}
+          {animationSize.height}
         </p>
       </div>
     </div>
