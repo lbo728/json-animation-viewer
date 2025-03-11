@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { AnimationItem, LottiePlayer } from "lottie-web";
 
-// Animation data type definition
 interface AnimationData {
   w?: number;
   h?: number;
@@ -12,8 +11,13 @@ interface AnimationData {
 
 export default function Home() {
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
-  const [animationData, setAnimationData] = useState<AnimationData | null>(null);
-  const [animationSize, setAnimationSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+  const [animationData, setAnimationData] = useState<AnimationData | null>(
+    null
+  );
+  const [animationSize, setAnimationSize] = useState<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
 
   const [fileName, setFileName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,7 +25,6 @@ export default function Home() {
   const animationRef = useRef<AnimationItem | null>(null);
 
   useEffect(() => {
-    // Dynamically import lottie-web
     import("lottie-web")
       .then((lottieModule) => {
         setLottie(lottieModule.default);
@@ -42,7 +45,6 @@ export default function Home() {
 
   useEffect(() => {
     if (lottie && animationData && containerRef.current) {
-      // Remove previous animation if exists
       if (animationRef.current) {
         animationRef.current.destroy();
       }
@@ -120,32 +122,51 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <label className="mb-4">
-        {fileName && <span className="mt-2 mr-2">{fileName}</span>}
-        <input type="file" accept=".json" onChange={handleFileUpload} className="hidden" ref={fileInputRef} />
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-900">
+      <h1 className="text-[48px] md:text-[48px] lg:text-[64px] font-extrabold text-white mb-2 text-center">
+        JSON Animation Viewer
+      </h1>
+      <h2 className="text-lg md:text-base text-gray-300 mb-2 text-center">
+        Easily preview your JSON animations by dragging them here!
+      </h2>
+      <p className="text-sm text-gray-400 mb-6 text-center">
+        Your JSON will not be stored on this site. You can rest assured as this
+        site has no database.
+      </p>
+
+      <label className="mb-4 w-full text-center">
+        {fileName && (
+          <span className="mt-2 mr-2 text-gray-200">{fileName}</span>
+        )}
+        <input
+          type="file"
+          accept=".json"
+          onChange={handleFileUpload}
+          className="hidden"
+          ref={fileInputRef}
+        />
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-900 transition-all"
+          className="relative bg-opacity-30 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-md hover:bg-opacity-50 transition-all w-full md:w-auto backdrop-blur-md border border-gray-700 overflow-hidden cursor-pointer"
           onClick={handleButtonClick}
         >
-          파일 선택
+          Select File
+          <span className="absolute inset-0 w-full h-full border-2 border-transparent rounded-lg animate-pulse"></span>
         </button>
       </label>
       <div
         ref={containerRef}
-        className="border border-gray-300"
-        style={{
-          width: "480px",
-          height: "480px",
-          overflow: "hidden",
-          position: "relative",
-        }}
+        className="border border-gray-700 w-full max-w-md h-96 flex items-center justify-center mb-8 bg-gray-800 rounded-lg shadow-lg"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-      ></div>
+      >
+        {!animationData && (
+          <p className="text-gray-400">Drag and drop your JSON here!</p>
+        )}
+      </div>
       <div className="mt-4">
-        <p>
-          애니메이션 사이즈(뷰포트 포함): {animationSize.width} x {animationSize.height}
+        <p className="text-gray-300">
+          Animation Size(include viewport): {animationSize.width} x{" "}
+          {animationSize.height}
         </p>
       </div>
     </div>
