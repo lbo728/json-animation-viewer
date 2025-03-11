@@ -1,4 +1,6 @@
 # Json Animation Viewer
+<img width="1050" alt="스크린샷 2025-03-11 오후 2 40 45" src="https://github.com/user-attachments/assets/615adcac-ba2c-4b5c-b896-5b80b363551f" />
+
 
 ## Introduction
 
