@@ -1,17 +1,38 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import lottie from "lottie-web";
+
+// lottie-web의 타입 정의
+interface LottiePlayer {
+  loadAnimation: (params: {
+    container: HTMLElement;
+    renderer: string;
+    loop: boolean;
+    autoplay: boolean;
+    animationData: any;
+  }) => LottieAnimation;
+}
+
+interface LottieAnimation {
+  destroy: () => void;
+}
 
 export default function Home() {
+  const [lottie, setLottie] = useState<LottiePlayer | null>(null);
   const [animationData, setAnimationData] = useState<unknown>(null);
   const [animationSize, setAnimationSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
 
   const [fileName, setFileName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const animationRef = useRef<LottieAnimation | null>(null);
 
   useEffect(() => {
+    // 동적으로 lottie-web 불러오기
+    import("lottie-web").then((lottieModule) => {
+      setLottie(lottieModule.default);
+    });
+
     const updateViewportSize = () => {};
 
     updateViewportSize();
@@ -23,9 +44,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (animationData && containerRef.current) {
+    if (lottie && animationData && containerRef.current) {
+      // 이전 애니메이션이 있으면 제거
+      if (animationRef.current) {
+        animationRef.current.destroy();
+      }
+
       containerRef.current.innerHTML = "";
-      const animation = lottie.loadAnimation({
+      animationRef.current = lottie.loadAnimation({
         container: containerRef.current,
         renderer: "svg",
         loop: true,
@@ -34,15 +60,19 @@ export default function Home() {
       });
 
       if (typeof animationData === "object" && animationData !== null) {
-        const { w, h } = animationData as { w: number; h: number };
-        setAnimationSize({ width: w, height: h });
+        const data = animationData as { w?: number; h?: number };
+        if (data.w && data.h) {
+          setAnimationSize({ width: data.w, height: data.h });
+        }
       }
 
       return () => {
-        animation.destroy();
+        if (animationRef.current) {
+          animationRef.current.destroy();
+        }
       };
     }
-  }, [animationData]);
+  }, [lottie, animationData]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
