@@ -1,37 +1,34 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import type { AnimationItem, LottiePlayer } from "lottie-web";
 
-// lottie-web의 타입 정의
-interface LottiePlayer {
-  loadAnimation: (params: {
-    container: HTMLElement;
-    renderer: string;
-    loop: boolean;
-    autoplay: boolean;
-    animationData: any;
-  }) => LottieAnimation;
-}
-
-interface LottieAnimation {
-  destroy: () => void;
+// Animation data type definition
+interface AnimationData {
+  w?: number;
+  h?: number;
+  [key: string]: unknown;
 }
 
 export default function Home() {
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
-  const [animationData, setAnimationData] = useState<unknown>(null);
+  const [animationData, setAnimationData] = useState<AnimationData | null>(null);
   const [animationSize, setAnimationSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
 
   const [fileName, setFileName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const animationRef = useRef<LottieAnimation | null>(null);
+  const animationRef = useRef<AnimationItem | null>(null);
 
   useEffect(() => {
-    // 동적으로 lottie-web 불러오기
-    import("lottie-web").then((lottieModule) => {
-      setLottie(lottieModule.default);
-    });
+    // Dynamically import lottie-web
+    import("lottie-web")
+      .then((lottieModule) => {
+        setLottie(lottieModule.default);
+      })
+      .catch((error) => {
+        console.error("Failed to load lottie-web:", error);
+      });
 
     const updateViewportSize = () => {};
 
@@ -45,7 +42,7 @@ export default function Home() {
 
   useEffect(() => {
     if (lottie && animationData && containerRef.current) {
-      // 이전 애니메이션이 있으면 제거
+      // Remove previous animation if exists
       if (animationRef.current) {
         animationRef.current.destroy();
       }
@@ -59,11 +56,8 @@ export default function Home() {
         animationData,
       });
 
-      if (typeof animationData === "object" && animationData !== null) {
-        const data = animationData as { w?: number; h?: number };
-        if (data.w && data.h) {
-          setAnimationSize({ width: data.w, height: data.h });
-        }
+      if (animationData.w && animationData.h) {
+        setAnimationSize({ width: animationData.w, height: animationData.h });
       }
 
       return () => {
@@ -80,10 +74,14 @@ export default function Home() {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          setAnimationData(JSON.parse(e.target?.result as string));
-          setFileName(file.name);
-        } catch {
-          console.error("Invalid JSON file");
+          const result = e.target?.result as string;
+          if (result) {
+            const parsedData = JSON.parse(result) as AnimationData;
+            setAnimationData(parsedData);
+            setFileName(file.name);
+          }
+        } catch (error) {
+          console.error("Invalid JSON file", error);
         }
       };
       reader.readAsText(file);
@@ -97,10 +95,14 @@ export default function Home() {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          setAnimationData(JSON.parse(e.target?.result as string));
-          setFileName(file.name);
-        } catch {
-          console.error("Invalid JSON file");
+          const result = e.target?.result as string;
+          if (result) {
+            const parsedData = JSON.parse(result) as AnimationData;
+            setAnimationData(parsedData);
+            setFileName(file.name);
+          }
+        } catch (error) {
+          console.error("Invalid JSON file", error);
         }
       };
       reader.readAsText(file);
