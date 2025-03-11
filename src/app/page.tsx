@@ -31,7 +31,7 @@ export default function Home() {
   useEffect(() => {
     if (animationData && containerRef.current) {
       containerRef.current.innerHTML = "";
-      lottie.loadAnimation({
+      const animation = lottie.loadAnimation({
         container: containerRef.current,
         renderer: "svg",
         loop: true,
@@ -44,6 +44,10 @@ export default function Home() {
         setAnimationSize({ width: w, height: h });
         // setViewPortDimensions({ width: w, height: h });
       }
+
+      return () => {
+        animation.destroy();
+      };
     }
   }, [animationData]);
 
