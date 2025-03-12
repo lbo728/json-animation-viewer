@@ -11,9 +11,7 @@ interface AnimationData {
 
 export default function Home() {
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
-  const [animationData, setAnimationData] = useState<AnimationData | null>(
-    null
-  );
+  const [animationData, setAnimationData] = useState<AnimationData | null>(null);
   const [animationSize, setAnimationSize] = useState<{
     width: number;
     height: number;
@@ -130,23 +128,14 @@ export default function Home() {
         Easily preview your JSON animations by dragging them here!
       </h2>
       <p className="text-sm text-gray-400 mb-6 text-center">
-        Your JSON will not be stored on this site. You can rest assured as this
-        site has no database.
+        Your JSON will not be stored on this site. You can rest assured as this site has no database.
       </p>
 
-      <label className="mb-4 w-full text-center">
-        {fileName && (
-          <span className="mt-2 mr-2 text-gray-200">{fileName}</span>
-        )}
-        <input
-          type="file"
-          accept=".json"
-          onChange={handleFileUpload}
-          className="hidden"
-          ref={fileInputRef}
-        />
+      <label className="mb-4 w-fit text-center">
+        {fileName && <span className="mt-2 mr-2 text-gray-200">{fileName}</span>}
+        <input type="file" accept=".json" onChange={handleFileUpload} className="hidden" ref={fileInputRef} />
         <button
-          className="relative bg-opacity-30 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-md hover:bg-opacity-50 transition-all w-full md:w-auto backdrop-blur-md border border-gray-700 overflow-hidden cursor-pointer"
+          className="relative bg-opacity-30 bg-gray-800 text-white px-[48px] py-3 rounded-lg shadow-md hover:bg-opacity-50 transition-all w-full md:w-auto backdrop-blur-md border border-gray-700 overflow-hidden cursor-pointer hover:bg-gray-900"
           onClick={handleButtonClick}
         >
           Select File
@@ -159,14 +148,11 @@ export default function Home() {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
-        {!animationData && (
-          <p className="text-gray-400">Drag and drop your JSON here!</p>
-        )}
+        {!animationData && <p className="text-gray-400">Drag and drop your JSON here!</p>}
       </div>
       <div className="mt-4">
         <p className="text-gray-300">
-          Animation Size(include viewport): {animationSize.width} x{" "}
-          {animationSize.height}
+          Animation Size(include viewport): {animationSize.width} x {animationSize.height}
         </p>
       </div>
     </div>
