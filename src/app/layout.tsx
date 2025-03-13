@@ -1,7 +1,8 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { GoogleAdSense } from "@/pages/GoogleAdsense";
+import GoogleAdSense from "@/components/GoogleAdsense";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
