@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import type { AnimationItem, LottiePlayer } from "lottie-web";
 
 interface AnimationData {
@@ -9,37 +9,26 @@ interface AnimationData {
   [key: string]: unknown;
 }
 
-export default function Home() {
-  const [lottie, setLottie] = useState<LottiePlayer | null>(null);
-  const [animationData, setAnimationData] = useState<AnimationData | null>(null);
-  const [animationSize, setAnimationSize] = useState<{
-    width: number;
-    height: number;
-  }>({ width: 0, height: 0 });
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center w-full h-96 bg-gray-800 rounded-lg">
+      <div className="animate-pulse text-gray-400">Loading...</div>
+    </div>
+  );
+}
 
-  const [fileName, setFileName] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+function AnimationContainer({
+  lottie,
+  animationData,
+  containerRef,
+  setAnimationSize,
+}: {
+  lottie: LottiePlayer | null;
+  animationData: AnimationData | null;
+  containerRef: React.RefObject<HTMLDivElement>;
+  setAnimationSize: (size: { width: number; height: number }) => void;
+}) {
   const animationRef = useRef<AnimationItem | null>(null);
-
-  useEffect(() => {
-    import("lottie-web")
-      .then((lottieModule) => {
-        setLottie(lottieModule.default);
-      })
-      .catch((error) => {
-        console.error("Failed to load lottie-web:", error);
-      });
-
-    const updateViewportSize = () => {};
-
-    updateViewportSize();
-    window.addEventListener("resize", updateViewportSize);
-
-    return () => {
-      window.removeEventListener("resize", updateViewportSize);
-    };
-  }, []);
 
   useEffect(() => {
     if (lottie && animationData && containerRef.current) {
@@ -66,7 +55,44 @@ export default function Home() {
         }
       };
     }
-  }, [lottie, animationData]);
+  }, [lottie, animationData, containerRef, setAnimationSize]);
+
+  return null;
+}
+
+export default function Home() {
+  const [lottie, setLottie] = useState<LottiePlayer | null>(null);
+  const [animationData, setAnimationData] = useState<AnimationData | null>(null);
+  const [animationSize, setAnimationSize] = useState<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
+
+  const [fileName, setFileName] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const loadLottie = async () => {
+      try {
+        const lottieModule = await import("lottie-web");
+        setLottie(lottieModule.default);
+      } catch (error) {
+        console.error("Failed to load lottie-web:", error);
+      }
+    };
+
+    loadLottie();
+
+    const updateViewportSize = () => {};
+
+    updateViewportSize();
+    window.addEventListener("resize", updateViewportSize);
+
+    return () => {
+      window.removeEventListener("resize", updateViewportSize);
+    };
+  }, []);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -137,6 +163,7 @@ export default function Home() {
         <button
           className="relative bg-opacity-30 bg-gray-800 text-white px-[48px] py-3 rounded-lg shadow-md hover:bg-opacity-50 transition-all w-full md:w-auto backdrop-blur-md border border-gray-700 overflow-hidden cursor-pointer hover:bg-gray-900"
           onClick={handleButtonClick}
+          aria-label="Select JSON file"
         >
           Select File
           <span className="absolute inset-0 w-full h-full border-2 border-transparent rounded-lg animate-pulse"></span>
@@ -147,9 +174,21 @@ export default function Home() {
         className="border border-gray-700 w-full max-w-md h-96 flex items-center justify-center mb-8 bg-gray-800 rounded-lg shadow-lg"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
+        aria-label="Drop zone for JSON animation files"
+        role="region"
       >
         {!animationData && <p className="text-gray-400">Drag and drop your JSON here!</p>}
       </div>
+      {lottie && animationData && (
+        <Suspense fallback={<LoadingFallback />}>
+          <AnimationContainer
+            lottie={lottie}
+            animationData={animationData}
+            containerRef={containerRef as React.RefObject<HTMLDivElement>}
+            setAnimationSize={setAnimationSize}
+          />
+        </Suspense>
+      )}
       <div className="mt-4">
         <p className="text-gray-300">
           Animation Size(include viewport): {animationSize.width} x {animationSize.height}
