@@ -203,7 +203,7 @@ export default function Home() {
         </Suspense>
       )}
       <div className="mt-4">
-        <p className="text-gray-300">
+        <p className="animation-size text-gray-300">
           Animation Size(include viewport): {animationSize.width} x{" "}
           {animationSize.height}
         </p>
