@@ -96,6 +96,9 @@ export async function generateMetadata({
       images: ["/og-image.png"],
     },
     category: "technology",
+    verification: {
+      google: "google720166e0719705ae",
+    },
   };
 }
 
