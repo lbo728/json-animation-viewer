@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     telephone: false,
     address: false,
   },
-  metadataBase: new URL("https://json-animation-viewer.vercel.app"),
+  metadataBase: new URL("https://json-animation-viewer.com"),
   alternates: {
     canonical: "/",
   },
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     description:
       "Easily preview your JSON animations with our user-friendly JSON Animation Viewer. Drag and drop your JSON files to see them in action!",
     type: "website",
-    url: "https://json-animation-viewer.vercel.app",
+    url: "https://json-animation-viewer.com",
     siteName: "JSON Animation Viewer",
     locale: "ko_KR",
     images: [
@@ -72,11 +72,12 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "JSON Animation Viewer - Preview Your JSON Animations",
-    description: "Easily preview your JSON animations with our user-friendly JSON Animation Viewer.",
+    description:
+      "Easily preview your JSON animations with our user-friendly JSON Animation Viewer.",
     images: ["/og-image.png"],
   },
   verification: {
-    google: "google-site-verification-code",
+    google: "google720166e0719705ae",
   },
   category: "technology",
 };
@@ -88,7 +89,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         {children}
         <GoogleAdSense />
         <JsonLd />

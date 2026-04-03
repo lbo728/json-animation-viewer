@@ -24,7 +24,7 @@ export default function JsonLd() {
         "@type": "Organization",
         name: "JSON Animation Viewer Team",
       },
-      screenshot: "https://json-animation-viewer.vercel.app/og-image.png",
+      screenshot: "https://json-animation-viewer.com/og-image.png",
       softwareVersion: "1.0",
       aggregateRating: {
         "@type": "AggregateRating",
