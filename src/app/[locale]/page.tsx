@@ -4,12 +4,10 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { AnimationItem, LottiePlayer } from "lottie-web";
+import { AnalysisResult } from "@/components/analysis/AnalysisResult";
+import type { LottieJson } from "@/lib/lottie-analyzer";
 
-interface AnimationData {
-  w?: number;
-  h?: number;
-  [key: string]: unknown;
-}
+type AnimationData = LottieJson;
 
 function LoadingFallback() {
   const t = useTranslations("common");
@@ -75,6 +73,7 @@ export default function Home() {
   }>({ width: 0, height: 0 });
 
   const [fileName, setFileName] = useState<string | null>(null);
+  const [fileSizeBytes, setFileSizeBytes] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -100,45 +99,33 @@ export default function Home() {
     };
   }, []);
 
+  const loadFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const result = e.target?.result as string;
+        if (result) {
+          const parsedData = JSON.parse(result) as AnimationData;
+          setAnimationData(parsedData);
+          setFileName(file.name);
+          setFileSizeBytes(file.size);
+        }
+      } catch (error) {
+        console.error("Invalid JSON file", error);
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const result = e.target?.result as string;
-          if (result) {
-            const parsedData = JSON.parse(result) as AnimationData;
-            setAnimationData(parsedData);
-            setFileName(file.name);
-          }
-        } catch (error) {
-          console.error("Invalid JSON file", error);
-        }
-      };
-      reader.readAsText(file);
-    }
+    if (file) loadFile(file);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const result = e.target?.result as string;
-          if (result) {
-            const parsedData = JSON.parse(result) as AnimationData;
-            setAnimationData(parsedData);
-            setFileName(file.name);
-          }
-        } catch (error) {
-          console.error("Invalid JSON file", error);
-        }
-      };
-      reader.readAsText(file);
-    }
+    if (file) loadFile(file);
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -212,6 +199,12 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {animationData ? (
+        <section className="w-full max-w-5xl mx-auto px-6 pb-16">
+          <AnalysisResult data={animationData} fileSizeBytes={fileSizeBytes} />
+        </section>
+      ) : null}
 
       <section className="w-full max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-white text-center mb-12">
