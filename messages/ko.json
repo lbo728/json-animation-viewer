@@ -1,4 +1,210 @@
 {
+  "analysis": {
+    "metadata": {
+      "title": "애니메이션 메타데이터",
+      "subtitle": "업로드한 Lottie 파일에서 자동 추출한 정보",
+      "version": "Lottie 스펙",
+      "dimensions": "크기",
+      "frameRate": "프레임레이트",
+      "totalFrames": "총 프레임 수",
+      "duration": "재생 시간",
+      "layerCount": "레이어 수",
+      "assetCount": "에셋",
+      "assetBreakdown": "이미지 {images}개 · 프리콤프 {precomps}개",
+      "embeddedImages": "임베디드 이미지",
+      "markers": "마커",
+      "fileSize": "파일 크기",
+      "is3D": "3D 레이어",
+      "yes": "있음",
+      "no": "없음",
+      "layerTypesHeading": "타입별 레이어"
+    },
+    "layers": {
+      "title": "레이어 분석",
+      "subtitle": "총 {count}개 레이어",
+      "listMode": "리스트",
+      "treeMode": "트리",
+      "columnName": "이름",
+      "columnType": "타입",
+      "columnFrames": "프레임",
+      "columnBlend": "블렌딩",
+      "column3D": "3D",
+      "columnEffects": "이펙트",
+      "columnMasks": "마스크",
+      "empty": "이 애니메이션에는 레이어가 없습니다.",
+      "pageStatus": "{from}–{to} / {total}",
+      "prev": "이전",
+      "next": "다음",
+      "clearHighlight": "하이라이트 해제"
+    },
+    "performance": {
+      "title": "성능 점수",
+      "subtitle": "저사양 기기 기준 런타임 비용을 예측하는 가중 지표",
+      "breakdownHeading": "메트릭별 기여도",
+      "metric": {
+        "layerCount": "레이어 수",
+        "expressions": "Expression 사용",
+        "effects": "이펙트",
+        "masks": "마스크",
+        "is3D": "3D 레이어",
+        "embeddedImages": "임베디드 이미지",
+        "frameRate": "프레임레이트"
+      },
+      "rawValue": "원시값: {value}"
+    },
+    "optimization": {
+      "title": "최적화 제안",
+      "subtitle": "{count}개 항목 검토 권장",
+      "allClear": "감지된 최적화 이슈가 없습니다 — 아주 깔끔한 파일입니다.",
+      "severity": {
+        "info": "정보",
+        "warning": "경고",
+        "error": "오류"
+      },
+      "what": "무엇이",
+      "why": "왜 중요한지",
+      "how": "어떻게 해결",
+      "relatedLayers": "관련 레이어로 이동",
+      "codes": {
+        "embeddedImages": {
+          "title": "JSON에 임베디드된 이미지",
+          "metric": "{value}개 임베디드",
+          "what": "일부 이미지가 base64로 JSON에 직접 포함되어 있습니다.",
+          "why": "임베디드 이미지는 JSON 용량을 크게 늘리고 디코딩을 지연시키며 브라우저 캐싱도 막습니다.",
+          "how": "이미지를 외부 에셋으로 내보내거나 가능하다면 벡터 Shape 레이어로 대체하세요."
+        },
+        "unnamedLayers": {
+          "title": "이름이 정리되지 않은 레이어",
+          "metric": "{value}개",
+          "what": "레이어가 \"Shape Layer 1\" 같은 AE 기본 이름 그대로입니다.",
+          "why": "의미 있는 이름이 없으면 JSON 디버깅이 어렵고 런타임에서 특정 레이어를 타겟팅할 수 없습니다.",
+          "how": "After Effects에서 내보내기 전에 레이어 이름을 역할에 맞게 변경하세요."
+        },
+        "expressions": {
+          "title": "Expression 사용",
+          "metric": "{value}개 Expression",
+          "what": "일부 레이어에 Expression(`x` 필드)이 사용되었습니다.",
+          "why": "iOS/Android Lottie 런타임은 Expression을 실행하지 않아 애니메이션이 조용히 누락됩니다.",
+          "how": "\"Convert Expression to Keyframes\" 또는 Bodymovin 베이커로 키프레임으로 변환하세요."
+        },
+        "hiddenLayers": {
+          "title": "숨겨진 레이어가 포함됨",
+          "metric": "{value}개 숨김",
+          "what": "`hd: true`로 표시된 레이어가 JSON에 여전히 포함되어 있습니다.",
+          "why": "보이지 않는 레이어도 파싱/렌더 비용이 발생합니다.",
+          "how": "런타임에서 사용하지 않는다면 After Effects에서 삭제 후 다시 내보내세요."
+        },
+        "duplicateShapePaths": {
+          "title": "중복 Shape Path",
+          "metric": "{value}개 중복",
+          "what": "같은 레이어 안에서 동일한 shape path가 두 번 이상 등장합니다.",
+          "why": "중복 지오메트리는 시각적 이득 없이 드로 콜을 두 배로 만듭니다.",
+          "how": "하나의 shape로 합치거나 precomp로 재사용하세요."
+        },
+        "excessiveKeyframes": {
+          "title": "과도한 키프레임",
+          "metric": "{value}개 키프레임",
+          "what": "일부 레이어의 키프레임 밀도가 매우 높습니다.",
+          "why": "키프레임 배열이 커지면 JSON 용량과 저사양 기기의 CPU 사용이 함께 증가합니다.",
+          "how": "애니메이션 커브를 단순화하거나 불필요한 키프레임을 제거하세요. 낮은 샘플링으로 다시 베이크하는 것도 방법입니다."
+        },
+        "largeImageResize": {
+          "title": "해상도가 과한 이미지 에셋",
+          "metric": "{value}개 에셋",
+          "what": "컴포지션보다 훨씬 큰 이미지 에셋이 포함되어 있습니다.",
+          "why": "2배 이상의 이미지는 매 렌더마다 대역폭과 메모리를 낭비합니다.",
+          "how": "임포트 전에 렌더 크기의 최대 2배 이하로 PNG/JPG를 리사이즈하세요."
+        },
+        "missingMarkers": {
+          "title": "마커가 없음",
+          "metric": "",
+          "what": "애니메이션에 명명된 마커가 전혀 없습니다.",
+          "why": "마커가 없으면 개발자가 프레임 번호를 추측해 세그먼트를 재생해야 합니다.",
+          "how": "After Effects에서 intro/loop/outro 등 의미 있는 구간마다 마커를 추가하세요."
+        }
+      }
+    },
+    "compatibility": {
+      "title": "플랫폼 호환성",
+      "subtitle": "Web / iOS / Android Lottie 런타임에서의 동작 지원 수준",
+      "officialDoc": "Airbnb 공식 문서 →",
+      "platforms": {
+        "web": "Web",
+        "ios": "iOS",
+        "android": "Android"
+      },
+      "levels": {
+        "supported": "완전 지원",
+        "partial": "부분 지원",
+        "unsupported": "미지원"
+      },
+      "issueBreakdown": "미지원 {unsupported}건 · 부분 지원 {partial}건",
+      "detectedIssues": "{platform}에서 감지된 이슈",
+      "noIssues": "이 파일에서 플랫폼 이슈가 감지되지 않았습니다.",
+      "columnFeature": "기능",
+      "columnDetected": "파일 내 사용",
+      "yes": "예",
+      "no": "아니오"
+    },
+    "playerControls": {
+      "title": "재생 컨트롤",
+      "subtitle": "속도, 방향, 반복 모드와 프레임 스크러빙",
+      "play": "재생",
+      "pause": "일시정지",
+      "directionToggle": "방향 전환",
+      "forward": "정방향 →",
+      "backward": "← 역방향",
+      "loopMode": {
+        "loop": "반복",
+        "once": "한 번",
+        "pingpong": "왕복"
+      },
+      "frame": "프레임",
+      "scrub": "프레임 스크럽",
+      "segmentLegend": "구간 반복",
+      "segmentEnable": "구간 반복 활성화",
+      "from": "시작",
+      "to": "종료",
+      "shortcutsHelp": "단축키 — Space: 재생/일시정지, ←/→: 1프레임 이동, Shift+←/→: 10프레임 이동"
+    },
+    "background": {
+      "title": "배경 변경",
+      "subtitle": "다양한 배경에서 애니메이션이 어떻게 보이는지 확인하세요",
+      "presetsHeading": "프리셋",
+      "presets": {
+        "transparent": "투명",
+        "white": "흰색",
+        "black": "검정",
+        "lightTone1": "라이트 1",
+        "lightTone2": "라이트 2",
+        "darkTone1": "다크 1",
+        "darkTone2": "다크 2"
+      },
+      "customColorHeading": "커스텀 색상",
+      "customColorPicker": "색상 피커",
+      "customColorHex": "HEX 색상",
+      "applyColor": "적용",
+      "recentColors": "최근 사용",
+      "customImageHeading": "커스텀 이미지",
+      "customImageNote": "이미지는 로컬 blob URL로만 처리되며 외부로 업로드되지 않습니다.",
+      "customImageUpload": "배경 이미지 업로드"
+    },
+    "snippets": {
+      "title": "코드 스니펫",
+      "subtitle": "주요 Lottie 런타임별 즉시 사용 가능한 코드",
+      "platforms": {
+        "react": "React",
+        "next": "Next.js",
+        "vue": "Vue 3",
+        "html": "HTML",
+        "swift": "Swift (iOS)",
+        "kotlin": "Kotlin (Android)"
+      },
+      "copy": "복사",
+      "copied": "복사 완료!",
+      "reflectedContext": "{file} ({width} × {height})용 스니펫"
+    }
+  },
   "common": {
     "backToHome": "← 홈으로 돌아가기",
     "backToBlog": "← 블로그로 돌아가기",
