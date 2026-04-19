@@ -145,6 +145,64 @@
       "columnDetected": "파일 내 사용",
       "yes": "예",
       "no": "아니오"
+    },
+    "playerControls": {
+      "title": "재생 컨트롤",
+      "subtitle": "속도, 방향, 반복 모드와 프레임 스크러빙",
+      "play": "재생",
+      "pause": "일시정지",
+      "directionToggle": "방향 전환",
+      "forward": "정방향 →",
+      "backward": "← 역방향",
+      "loopMode": {
+        "loop": "반복",
+        "once": "한 번",
+        "pingpong": "왕복"
+      },
+      "frame": "프레임",
+      "scrub": "프레임 스크럽",
+      "segmentLegend": "구간 반복",
+      "segmentEnable": "구간 반복 활성화",
+      "from": "시작",
+      "to": "종료",
+      "shortcutsHelp": "단축키 — Space: 재생/일시정지, ←/→: 1프레임 이동, Shift+←/→: 10프레임 이동"
+    },
+    "background": {
+      "title": "배경 변경",
+      "subtitle": "다양한 배경에서 애니메이션이 어떻게 보이는지 확인하세요",
+      "presetsHeading": "프리셋",
+      "presets": {
+        "transparent": "투명",
+        "white": "흰색",
+        "black": "검정",
+        "lightTone1": "라이트 1",
+        "lightTone2": "라이트 2",
+        "darkTone1": "다크 1",
+        "darkTone2": "다크 2"
+      },
+      "customColorHeading": "커스텀 색상",
+      "customColorPicker": "색상 피커",
+      "customColorHex": "HEX 색상",
+      "applyColor": "적용",
+      "recentColors": "최근 사용",
+      "customImageHeading": "커스텀 이미지",
+      "customImageNote": "이미지는 로컬 blob URL로만 처리되며 외부로 업로드되지 않습니다.",
+      "customImageUpload": "배경 이미지 업로드"
+    },
+    "snippets": {
+      "title": "코드 스니펫",
+      "subtitle": "주요 Lottie 런타임별 즉시 사용 가능한 코드",
+      "platforms": {
+        "react": "React",
+        "next": "Next.js",
+        "vue": "Vue 3",
+        "html": "HTML",
+        "swift": "Swift (iOS)",
+        "kotlin": "Kotlin (Android)"
+      },
+      "copy": "복사",
+      "copied": "복사 완료!",
+      "reflectedContext": "{file} ({width} × {height})용 스니펫"
     }
   },
   "common": {

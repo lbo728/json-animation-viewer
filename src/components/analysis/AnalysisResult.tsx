@@ -7,13 +7,15 @@ import { LayersSection } from "./LayersSection";
 import { MetadataSection } from "./MetadataSection";
 import { OptimizationSection } from "./OptimizationSection";
 import { PerformanceSection } from "./PerformanceSection";
+import { SnippetSection } from "./SnippetSection";
 
 interface AnalysisResultProps {
   data: LottieJson;
   fileSizeBytes: number | null;
+  fileName: string;
 }
 
-export function AnalysisResult({ data, fileSizeBytes }: AnalysisResultProps) {
+export function AnalysisResult({ data, fileSizeBytes, fileName }: AnalysisResultProps) {
   const [highlightedLayerIndex, setHighlightedLayerIndex] = useState<number | null>(
     null,
   );
@@ -49,6 +51,11 @@ export function AnalysisResult({ data, fileSizeBytes }: AnalysisResultProps) {
       <CompatibilitySection
         compatibility={analysis.compatibility}
         onJumpToLayer={handleJumpToLayer}
+      />
+      <SnippetSection
+        fileName={fileName}
+        width={analysis.metadata.width}
+        height={analysis.metadata.height}
       />
     </div>
   );
