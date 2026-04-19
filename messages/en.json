@@ -145,6 +145,64 @@
       "columnDetected": "In file",
       "yes": "Yes",
       "no": "No"
+    },
+    "playerControls": {
+      "title": "Playback Controls",
+      "subtitle": "Speed, direction, loop mode and frame scrubbing",
+      "play": "Play",
+      "pause": "Pause",
+      "directionToggle": "Toggle direction",
+      "forward": "Forward →",
+      "backward": "← Reverse",
+      "loopMode": {
+        "loop": "Loop",
+        "once": "Once",
+        "pingpong": "Ping-pong"
+      },
+      "frame": "Frame",
+      "scrub": "Scrub frame",
+      "segmentLegend": "Loop a segment",
+      "segmentEnable": "Enable segment loop",
+      "from": "From",
+      "to": "To",
+      "shortcutsHelp": "Shortcuts — Space: play/pause, ←/→: step 1 frame, Shift+←/→: step 10 frames"
+    },
+    "background": {
+      "title": "Background",
+      "subtitle": "Check your animation against different canvases",
+      "presetsHeading": "Presets",
+      "presets": {
+        "transparent": "Transparent",
+        "white": "White",
+        "black": "Black",
+        "lightTone1": "Light 1",
+        "lightTone2": "Light 2",
+        "darkTone1": "Dark 1",
+        "darkTone2": "Dark 2"
+      },
+      "customColorHeading": "Custom color",
+      "customColorPicker": "Color picker",
+      "customColorHex": "Hex color",
+      "applyColor": "Apply",
+      "recentColors": "Recently used",
+      "customImageHeading": "Custom image",
+      "customImageNote": "Images are loaded locally with blob URLs — nothing is uploaded.",
+      "customImageUpload": "Upload background image"
+    },
+    "snippets": {
+      "title": "Code Snippets",
+      "subtitle": "Drop-in code for the most common Lottie runtimes",
+      "platforms": {
+        "react": "React",
+        "next": "Next.js",
+        "vue": "Vue 3",
+        "html": "HTML",
+        "swift": "Swift (iOS)",
+        "kotlin": "Kotlin (Android)"
+      },
+      "copy": "Copy",
+      "copied": "Copied!",
+      "reflectedContext": "Generated for {file} ({width} × {height})"
     }
   },
   "common": {
