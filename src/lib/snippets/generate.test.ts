@@ -38,10 +38,22 @@ describe("generateSnippet", () => {
     expect(out.code).toContain("CGRect(x: 0, y: 0, width: 400, height: 300)");
   });
 
-  it("produces kotlin snippet with R.raw lookup", () => {
+  it("produces kotlin snippet with a valid Android resource identifier", () => {
     const out = generateSnippet("kotlin", input);
-    expect(out.code).toContain("R.raw.my-lottie");
-    expect(out.code).toContain("my_lottie");
+    expect(out.code).toContain("R.raw.my_lottie");
+    expect(out.code).toContain("res/raw/my_lottie.json");
+    expect(out.code).not.toContain("R.raw.my-lottie");
+    expect(out.code).not.toMatch(/R\.raw\.[^a-z0-9_]/);
+  });
+
+  it("kotlin snippet normalizes numeric-leading and whitespace filenames", () => {
+    const out = generateSnippet("kotlin", {
+      fileName: "123 cool.json",
+      width: null,
+      height: null,
+    });
+    expect(out.code).toMatch(/R\.raw\.[a-z_][a-z0-9_]*/);
+    expect(out.code).not.toMatch(/R\.raw\.[^a-z0-9_\n]/);
   });
 
   it("handles missing dimensions and unusual filenames", () => {

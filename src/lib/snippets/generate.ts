@@ -128,32 +128,36 @@ final class ${capitalize(varName)}ViewController: UIViewController {
 }
 `,
       };
-    case "kotlin":
+    case "kotlin": {
+      const resName = varName.toLowerCase();
       return {
         platform,
         language: "kotlin",
         install:
           "// build.gradle(.kts)\n// implementation(\"com.airbnb.android:lottie:6.5.2\")",
-        code: `// res/raw/${stripExtension(input.fileName)}.json 에 파일을 배치
+        code: `// Android 리소스 이름은 [a-z0-9_]만 허용됩니다.
+// 원본 파일(${input.fileName})을 res/raw/${resName}.json 으로 저장하세요.
 // layout XML
 /*
 <com.airbnb.lottie.LottieAnimationView
-    android:id="@+id/${varName}"
+    android:id="@+id/${resName}"
     android:layout_width="${w}dp"
     android:layout_height="${h}dp"
-    app:lottie_rawRes="@raw/${stripExtension(input.fileName)}"
+    app:lottie_rawRes="@raw/${resName}"
     app:lottie_autoPlay="true"
     app:lottie_loop="true" />
 */
 
 import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
 
-val animationView: LottieAnimationView = findViewById(R.id.${varName})
-animationView.setAnimation(R.raw.${stripExtension(input.fileName)})
+val animationView: LottieAnimationView = findViewById(R.id.${resName})
+animationView.setAnimation(R.raw.${resName})
 animationView.repeatCount = LottieDrawable.INFINITE
 animationView.playAnimation()
 `,
       };
+    }
   }
 }
 
