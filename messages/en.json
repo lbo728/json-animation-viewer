@@ -1,4 +1,152 @@
 {
+  "analysis": {
+    "metadata": {
+      "title": "Animation Metadata",
+      "subtitle": "Auto-extracted facts about your Lottie file",
+      "version": "Lottie Spec",
+      "dimensions": "Dimensions",
+      "frameRate": "Frame Rate",
+      "totalFrames": "Total Frames",
+      "duration": "Duration",
+      "layerCount": "Layer Count",
+      "assetCount": "Assets",
+      "assetBreakdown": "{images} images · {precomps} precomps",
+      "embeddedImages": "Embedded Images",
+      "markers": "Markers",
+      "fileSize": "File Size",
+      "is3D": "3D Layers",
+      "yes": "Yes",
+      "no": "No",
+      "layerTypesHeading": "Layers by Type"
+    },
+    "layers": {
+      "title": "Layer Breakdown",
+      "subtitle": "{count} layers detected",
+      "listMode": "List",
+      "treeMode": "Tree",
+      "columnName": "Name",
+      "columnType": "Type",
+      "columnFrames": "Frames",
+      "columnBlend": "Blend",
+      "column3D": "3D",
+      "columnEffects": "FX",
+      "columnMasks": "Masks",
+      "empty": "No layers in this animation.",
+      "pageStatus": "Showing {from}–{to} of {total}",
+      "prev": "Prev",
+      "next": "Next",
+      "clearHighlight": "Clear highlight"
+    },
+    "performance": {
+      "title": "Performance Score",
+      "subtitle": "Weighted signals that predict runtime cost on low-end devices",
+      "breakdownHeading": "Metric contribution",
+      "metric": {
+        "layerCount": "Layer count",
+        "expressions": "Expression usage",
+        "effects": "Effects",
+        "masks": "Masks",
+        "is3D": "3D layers",
+        "embeddedImages": "Embedded images",
+        "frameRate": "Frame rate"
+      },
+      "rawValue": "raw: {value}"
+    },
+    "optimization": {
+      "title": "Optimization Suggestions",
+      "subtitle": "{count} issues worth reviewing",
+      "allClear": "No optimization issues detected — this file is in great shape.",
+      "severity": {
+        "info": "info",
+        "warning": "warning",
+        "error": "error"
+      },
+      "what": "What",
+      "why": "Why it matters",
+      "how": "How to fix",
+      "relatedLayers": "Jump to layer",
+      "codes": {
+        "embeddedImages": {
+          "title": "Embedded raster images",
+          "metric": "{value} embedded",
+          "what": "Some images are base64-embedded directly in the JSON.",
+          "why": "Embedded images make the JSON much larger, block fast decoding, and defeat browser image caching.",
+          "how": "Export images as external assets or replace them with vector shape layers when possible."
+        },
+        "unnamedLayers": {
+          "title": "Unnamed / default-named layers",
+          "metric": "{value} layers",
+          "what": "Layers still use AE default names like \"Shape Layer 1\".",
+          "why": "Without meaningful names the JSON is hard to inspect and runtime platforms cannot target individual layers.",
+          "how": "Rename layers in After Effects to describe what they represent before exporting."
+        },
+        "expressions": {
+          "title": "Expression usage",
+          "metric": "{value} expressions",
+          "what": "Expressions (`x` fields) are used in one or more layers.",
+          "why": "Mobile Lottie renderers do not execute expressions and will silently drop the animation.",
+          "how": "Pre-bake expressions into keyframes via \"Convert Expression to Keyframes\" or Lottie's Bodymovin baker."
+        },
+        "hiddenLayers": {
+          "title": "Hidden layers shipping in the file",
+          "metric": "{value} hidden",
+          "what": "Layers are marked hidden (`hd: true`) but still included in the JSON.",
+          "why": "Hidden layers add parse/render cost for something the user never sees.",
+          "how": "Delete them in After Effects if they are not needed for runtime logic."
+        },
+        "duplicateShapePaths": {
+          "title": "Duplicate shape paths",
+          "metric": "{value} duplicates",
+          "what": "The same shape path appears more than once in the same layer.",
+          "why": "Duplicate geometry doubles draw-calls with no visual benefit.",
+          "how": "Combine into a single shape or reuse via a precomp."
+        },
+        "excessiveKeyframes": {
+          "title": "Excessive keyframes",
+          "metric": "{value} keyframes",
+          "what": "One or more layers contain very dense keyframe data.",
+          "why": "Large keyframe arrays increase JSON size and CPU cost on low-end devices.",
+          "how": "Simplify the animation curve, drop non-essential keyframes, or use expressions pre-baked at a lower sample rate."
+        },
+        "largeImageResize": {
+          "title": "Oversized image assets",
+          "metric": "{value} assets",
+          "what": "Some image assets are significantly larger than the composition.",
+          "why": "Shipping 2× or larger images wastes bandwidth and memory on every render.",
+          "how": "Resize the PNG/JPG to at most 2× the rendered dimensions before importing."
+        },
+        "missingMarkers": {
+          "title": "No markers defined",
+          "metric": "",
+          "what": "The animation has no named markers.",
+          "why": "Markers let developers jump to specific segments without guessing frame numbers.",
+          "how": "Add markers in After Effects for each meaningful segment (intro, loop, outro, etc.)."
+        }
+      }
+    },
+    "compatibility": {
+      "title": "Platform Compatibility",
+      "subtitle": "How this file behaves on Web, iOS, and Android Lottie runtimes",
+      "officialDoc": "Airbnb docs →",
+      "platforms": {
+        "web": "Web",
+        "ios": "iOS",
+        "android": "Android"
+      },
+      "levels": {
+        "supported": "Fully supported",
+        "partial": "Partial support",
+        "unsupported": "Not supported"
+      },
+      "issueBreakdown": "{unsupported} unsupported · {partial} partial",
+      "detectedIssues": "Detected issues on {platform}",
+      "noIssues": "No platform issues detected in this file.",
+      "columnFeature": "Feature",
+      "columnDetected": "In file",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
   "common": {
     "backToHome": "← Back to Home",
     "backToBlog": "← Back to Blog",
