@@ -50,7 +50,7 @@ export function PerformanceSection({ score }: PerformanceSectionProps) {
           </h4>
           <ul className="space-y-2">
             {sortedBreakdown.map((metric) => {
-              const contributionPct = (metric.contribution / 100) * 100;
+              const contributionPct = metric.score;
               return (
                 <li key={metric.key}>
                   <div className="flex items-center justify-between text-xs">
