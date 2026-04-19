@@ -1,82 +1,48 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import type { AnimationItem, LottiePlayer } from "lottie-web";
+import type { LottiePlayer } from "lottie-web";
+import { AnalysisResult } from "@/components/analysis/AnalysisResult";
+import { BackgroundSection } from "@/components/player/BackgroundSection";
+import {
+  LottiePlayerStage,
+  type LottiePlayerHandle,
+} from "@/components/player/LottiePlayerStage";
+import { PlayerControlsSection } from "@/components/player/PlayerControlsSection";
+import type { PlayerState } from "@/components/player/types";
+import type { LottieJson } from "@/lib/lottie-analyzer";
 
-interface AnimationData {
-  w?: number;
-  h?: number;
-  [key: string]: unknown;
-}
-
-function LoadingFallback() {
-  const t = useTranslations("common");
-  return (
-    <div className="flex items-center justify-center w-full h-96 bg-gray-800 rounded-lg">
-      <div className="animate-pulse text-gray-400">{t("loading")}</div>
-    </div>
-  );
-}
-
-function AnimationContainer({
-  lottie,
-  animationData,
-  containerRef,
-  setAnimationSize,
-}: {
-  lottie: LottiePlayer | null;
-  animationData: AnimationData | null;
-  containerRef: React.RefObject<HTMLDivElement>;
-  setAnimationSize: (size: { width: number; height: number }) => void;
-}) {
-  const animationRef = useRef<AnimationItem | null>(null);
-
-  useEffect(() => {
-    if (lottie && animationData && containerRef.current) {
-      if (animationRef.current) {
-        animationRef.current.destroy();
-      }
-
-      containerRef.current.innerHTML = "";
-      animationRef.current = lottie.loadAnimation({
-        container: containerRef.current,
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        animationData,
-      });
-
-      if (animationData.w && animationData.h) {
-        setAnimationSize({ width: animationData.w, height: animationData.h });
-      }
-
-      return () => {
-        if (animationRef.current) {
-          animationRef.current.destroy();
-        }
-      };
-    }
-  }, [lottie, animationData, containerRef, setAnimationSize]);
-
-  return null;
-}
+const DEFAULT_PLAYER_STATE: PlayerState = {
+  speed: 1,
+  direction: 1,
+  loopMode: "loop",
+  segment: null,
+  background: { kind: "transparent" },
+};
 
 export default function Home() {
   const t = useTranslations("home");
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
-  const [animationData, setAnimationData] = useState<AnimationData | null>(
-    null
-  );
+  const [animationData, setAnimationData] = useState<LottieJson | null>(null);
   const [animationSize, setAnimationSize] = useState<{
     width: number;
     height: number;
   }>({ width: 0, height: 0 });
 
   const [fileName, setFileName] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [fileSizeBytes, setFileSizeBytes] = useState<number | null>(null);
+  const [playerState, setPlayerState] =
+    useState<PlayerState>(DEFAULT_PLAYER_STATE);
+  const [currentFrame, setCurrentFrame] = useState(0);
+  const [totalFrames, setTotalFrames] = useState(0);
+  const [frameRate, setFrameRate] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const playerHandleRef = useRef<LottiePlayerHandle | null>(null);
+  const dropZoneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadLottie = async () => {
@@ -89,56 +55,43 @@ export default function Home() {
     };
 
     loadLottie();
-
-    const updateViewportSize = () => {};
-
-    updateViewportSize();
-    window.addEventListener("resize", updateViewportSize);
-
-    return () => {
-      window.removeEventListener("resize", updateViewportSize);
-    };
   }, []);
+
+  useEffect(() => {
+    if (animationData?.w && animationData?.h) {
+      setAnimationSize({ width: animationData.w, height: animationData.h });
+    }
+  }, [animationData]);
+
+  const loadFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const result = e.target?.result as string;
+        if (result) {
+          const parsedData = JSON.parse(result) as LottieJson;
+          setAnimationData(parsedData);
+          setFileName(file.name);
+          setFileSizeBytes(file.size);
+          setPlayerState(DEFAULT_PLAYER_STATE);
+          setCurrentFrame(0);
+        }
+      } catch (error) {
+        console.error("Invalid JSON file", error);
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const result = e.target?.result as string;
-          if (result) {
-            const parsedData = JSON.parse(result) as AnimationData;
-            setAnimationData(parsedData);
-            setFileName(file.name);
-          }
-        } catch (error) {
-          console.error("Invalid JSON file", error);
-        }
-      };
-      reader.readAsText(file);
-    }
+    if (file) loadFile(file);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const result = e.target?.result as string;
-          if (result) {
-            const parsedData = JSON.parse(result) as AnimationData;
-            setAnimationData(parsedData);
-            setFileName(file.name);
-          }
-        } catch (error) {
-          console.error("Invalid JSON file", error);
-        }
-      };
-      reader.readAsText(file);
-    }
+    if (file) loadFile(file);
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -149,6 +102,10 @@ export default function Home() {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+  };
+
+  const updatePlayerState = (partial: Partial<PlayerState>) => {
+    setPlayerState((prev) => ({ ...prev, ...partial }));
   };
 
   return (
@@ -163,7 +120,7 @@ export default function Home() {
         <p className="text-[12px] md:text-[14px] lg:text-[16px] text-gray-400 mb-6 text-center">
           {t("privacyNote")}
         </p>
-      <label className="mb-4 w-fit text-center">
+        <label className="mb-4 w-fit text-center">
           {fileName && (
             <span className="mt-2 mr-2 text-gray-200">{fileName}</span>
           )}
@@ -183,28 +140,35 @@ export default function Home() {
             <span className="absolute inset-0 w-full h-full border-2 border-transparent rounded-lg animate-pulse"></span>
           </button>
         </label>
-        <div
-          ref={containerRef}
-          className="border border-gray-700 w-full max-w-md h-96 flex items-center justify-center mb-8 bg-gray-800 rounded-lg shadow-lg"
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          aria-label={t("dropHere")}
-          role="region"
-        >
-          {!animationData && (
+
+        {!animationData ? (
+          <div
+            ref={dropZoneRef}
+            className="border border-gray-700 w-full max-w-md h-96 flex items-center justify-center mb-8 bg-gray-800 rounded-lg shadow-lg"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            aria-label={t("dropHere")}
+            role="region"
+          >
             <p className="text-gray-400">{t("dropHere")}</p>
-          )}
-        </div>
-        {lottie && animationData && (
-          <Suspense fallback={<LoadingFallback />}>
-            <AnimationContainer
+          </div>
+        ) : lottie ? (
+          <div className="w-full max-w-md">
+            <LottiePlayerStage
               lottie={lottie}
-              animationData={animationData}
-              containerRef={containerRef as React.RefObject<HTMLDivElement>}
-              setAnimationSize={setAnimationSize}
+              data={animationData}
+              state={playerState}
+              onFrame={setCurrentFrame}
+              onReady={(total, fr) => {
+                setTotalFrames(total);
+                setFrameRate(fr);
+              }}
+              onPlayStateChange={setIsPlaying}
+              handleRef={playerHandleRef}
             />
-          </Suspense>
-        )}
+          </div>
+        ) : null}
+
         <div className="mt-4">
           <p className="animation-size text-gray-300">
             {t("animationSize")} {animationSize.width} x{" "}
@@ -212,6 +176,33 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {animationData && fileName ? (
+        <section className="w-full max-w-5xl mx-auto px-6 pb-16">
+          <div className="flex flex-col gap-4">
+            <PlayerControlsSection
+              state={playerState}
+              onChange={updatePlayerState}
+              playerHandle={playerHandleRef}
+              currentFrame={currentFrame}
+              totalFrames={totalFrames}
+              frameRate={frameRate}
+              isPlaying={isPlaying}
+            />
+            <BackgroundSection
+              value={playerState.background}
+              onChange={(background) => updatePlayerState({ background })}
+            />
+          </div>
+          <div className="mt-4">
+            <AnalysisResult
+              data={animationData}
+              fileSizeBytes={fileSizeBytes}
+              fileName={fileName}
+            />
+          </div>
+        </section>
+      ) : null}
 
       <section className="w-full max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-white text-center mb-12">
