@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 /test-results
 AGENTS.local.md
+
+# local Codex authority/sandbox configuration
+/.codex/

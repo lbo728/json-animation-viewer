@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import { BLOG_SLUGS, getBlogPost } from "@/content/blog-posts";
 
 export async function generateMetadata({
   params,
@@ -19,14 +20,6 @@ export async function generateMetadata({
   };
 }
 
-const posts = [
-  { slug: "what-is-lottie", titleKey: "post1Title", descKey: "post1Desc", date: "2025-02-20" },
-  { slug: "json-animation-tutorial", titleKey: "post2Title", descKey: "post2Desc", date: "2025-02-18" },
-  { slug: "lottie-vs-gif", titleKey: "post3Title", descKey: "post3Desc", date: "2025-02-15" },
-  { slug: "best-lottie-resources", titleKey: "post4Title", descKey: "post4Desc", date: "2025-02-12" },
-  { slug: "how-to-create-lottie-animation", titleKey: "post5Title", descKey: "post5Desc", date: "2025-02-10" },
-] as const;
-
 export default async function BlogPage({
   params,
 }: {
@@ -36,11 +29,13 @@ export default async function BlogPage({
   setRequestLocale(locale);
   const t = await getTranslations("blog");
   const tc = await getTranslations("common");
+  const posts = BLOG_SLUGS.map((slug) => getBlogPost(slug, locale));
 
   return (
     <div className="min-h-screen bg-gray-900">
       <div className="max-w-3xl mx-auto px-6 py-16">
         <Breadcrumb
+          locale={locale}
           items={[
             { name: locale === "ko" ? "홈" : "Home", href: "/" },
             { name: locale === "ko" ? "블로그" : "Blog", href: "/blog" },
@@ -64,19 +59,21 @@ export default async function BlogPage({
             >
               <time
                 className="text-sm text-gray-500 block mb-2"
-                dateTime={post.date}
+                dateTime="2026-07-26"
               >
-                {post.date}
+                {locale === "ko"
+                  ? "최초 게시 2026-02-23 · 검토 2026-07-26"
+                  : "Published 2026-02-23 · reviewed 2026-07-26"}
               </time>
               <h2 className="text-xl font-semibold mb-2">
                 <Link
                   href={`/blog/${post.slug}`}
                   className="text-white hover:text-blue-400 transition-colors"
                 >
-                  {t(post.titleKey)}
+                  {post.title}
                 </Link>
               </h2>
-              <p className="text-gray-400 mb-3">{t(post.descKey)}</p>
+              <p className="text-gray-400 mb-3">{post.description}</p>
               <Link
                 href={`/blog/${post.slug}`}
                 className="text-blue-400 hover:text-blue-300 text-sm transition-colors"

@@ -4,6 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: process.cwd(),
   // Image optimization settings
   images: {
     formats: ["image/avif", "image/webp"],

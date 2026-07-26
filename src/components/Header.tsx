@@ -13,6 +13,7 @@ export default function Header() {
     { href: "/" as const, label: t("home") },
     { href: "/about" as const, label: t("about") },
     { href: "/guide" as const, label: t("guide") },
+    { href: "/methodology" as const, label: t("methodology") },
     { href: "/faq" as const, label: t("faq") },
     { href: "/blog" as const, label: t("blog") },
   ];

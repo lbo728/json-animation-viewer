@@ -1,59 +1,70 @@
-# Json Animation Viewer
-<img width="1050" alt="스크린샷 2025-03-11 오후 2 40 45" src="https://github.com/user-attachments/assets/615adcac-ba2c-4b5c-b896-5b80b363551f" />
+# JSON Animation Viewer
 
+JSON Animation Viewer is a bilingual browser tool for previewing and inspecting Lottie JSON files. It combines lottie-web playback with metadata, layer, optimization, static performance, compatibility, background, and starter-code panels.
 
-## Introduction
+Production: [json-animation-viewer.com](https://json-animation-viewer.com)
 
-Json Animation Viewer is a simple web application that allows users to upload Lottie JSON animation files and preview them while adjusting the animation size. Users can either drag and drop files or click a button to select a file.
+Source: [github.com/byungsker/json-animation-viewer](https://github.com/byungsker/json-animation-viewer)
 
-## Features
+## Current capabilities
 
-- Upload Lottie JSON animation files
-- Adjust animation size
-- Display the name of the selected file
-- Preview animation within a fixed viewport
+- Select or drag a Lottie-style `.json` file
+- Validate the minimum animation structure and report invalid input
+- Control play, pause, direction, speed, looping, segments, and frames
+- Test transparency against preset, custom-color, or local-image backgrounds
+- Inspect dimensions, timing, layers, assets, markers, and file size
+- Review documented static performance signals and optimization suggestions
+- Flag features that may behave differently on web, iOS, or Android
+- Generate starter snippets for common web and mobile runtimes
+- Read English or Korean product, guide, methodology, FAQ, legal, and blog pages
 
-## Tech Stack
+The [analysis methodology](https://json-animation-viewer.com/methodology) documents the score inputs, weights, detection rules, and limitations. Results are heuristics, not device benchmarks or runtime certification.
 
-- **React**: For building the user interface
-- **Lottie-web**: For rendering animations
-- **TypeScript**: For static type checking
-- **Tailwind CSS**: For styling
+## File-processing boundary
 
-## Installation and Running
+The selected JSON file is parsed in browser memory and is not intentionally uploaded to an application server or stored in a product database. This does not mean the whole page is offline: hosting and advertising code can make network requests, and a JSON file that references external assets can cause the browser to request those assets.
 
-1. **Clone the Repository**
+Review the production Privacy Policy and your browser's network panel before using sensitive files.
 
-   ```bash
-   git clone https://github.com/username/repo-name.git
-   cd repo-name
-   ```
+## Local development
 
-2. **Install Dependencies**
+Requirements:
 
-   ```bash
-   npm install
-   ```
+- Node.js 20 or newer
+- npm
 
-3. **Run the Development Server**
+```bash
+git clone https://github.com/byungsker/json-animation-viewer.git
+cd json-animation-viewer
+npm install
+npm run dev
+```
 
-   ```bash
-   npm run dev
-   ```
+Open `http://localhost:3000`.
 
-4. **Open in Browser**
-   Access the application at `http://localhost:3000` in your browser.
+## Verification
 
-## Usage
+```bash
+npm test
+npm run lint
+npm run build
+npm run audit:routes -- http://localhost:3000
+npm run test:e2e
+```
 
-1. Click the "Select File" button to upload a Lottie JSON file.
-2. The name of the uploaded file will be displayed.
-3. Use the slider to adjust the size of the animation.
+## Tech stack
+
+- Next.js and React
+- TypeScript
+- next-intl
+- lottie-web
+- Tailwind CSS
+- Vitest and Playwright
 
 ## Contributing
 
-If you would like to contribute, please fork this repository, make your changes, and submit a pull request.
+Open an issue before a substantial change so behavior, scope, and verification can be agreed. Pull requests should include relevant tests and preserve both English and Korean routes.
 
 ## License
 
-This project is licensed under the MIT License.
+No project license file is currently included. Public source availability does not by itself grant reuse, modification, or redistribution rights.

@@ -13,6 +13,7 @@ import {
 import { PlayerControlsSection } from "@/components/player/PlayerControlsSection";
 import type { PlayerState } from "@/components/player/types";
 import type { LottieJson } from "@/lib/lottie-analyzer";
+import { isLottieJson } from "@/lib/lottie-file";
 
 const DEFAULT_PLAYER_STATE: PlayerState = {
   speed: 1,
@@ -33,6 +34,7 @@ export default function Home() {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileSizeBytes, setFileSizeBytes] = useState<number | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const [playerState, setPlayerState] =
     useState<PlayerState>(DEFAULT_PLAYER_STATE);
   const [currentFrame, setCurrentFrame] = useState(0);
@@ -64,12 +66,17 @@ export default function Home() {
   }, [animationData]);
 
   const loadFile = (file: File) => {
+    setFileError(null);
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const result = e.target?.result as string;
         if (result) {
-          const parsedData = JSON.parse(result) as LottieJson;
+          const parsedData: unknown = JSON.parse(result);
+          if (!isLottieJson(parsedData)) {
+            setFileError(t("invalidFile"));
+            return;
+          }
           setAnimationData(parsedData);
           setFileName(file.name);
           setFileSizeBytes(file.size);
@@ -78,8 +85,10 @@ export default function Home() {
         }
       } catch (error) {
         console.error("Invalid JSON file", error);
+        setFileError(t("invalidFile"));
       }
     };
+    reader.onerror = () => setFileError(t("readError"));
     reader.readAsText(file);
   };
 
@@ -140,6 +149,14 @@ export default function Home() {
             <span className="absolute inset-0 w-full h-full border-2 border-transparent rounded-lg animate-pulse"></span>
           </button>
         </label>
+        {fileError ? (
+          <p
+            className="mb-4 max-w-md rounded-md border border-red-500/40 bg-red-950/40 px-4 py-3 text-center text-sm text-red-200"
+            role="alert"
+          >
+            {fileError}
+          </p>
+        ) : null}
 
         {!animationData ? (
           <div
@@ -286,7 +303,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-white text-center mb-8">
           {t("learnMore")}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link
             href="/guide"
             className="block bg-gray-800/50 rounded-lg p-6 border border-gray-700 hover:border-blue-500/50 transition-colors"
@@ -294,6 +311,15 @@ export default function Home() {
             <h3 className="text-lg font-semibold text-white mb-2">{t("learnGuideTitle")}</h3>
             <p className="text-gray-400 text-sm">
               {t("learnGuideDesc")}
+            </p>
+          </Link>
+          <Link
+            href="/methodology"
+            className="block bg-gray-800/50 rounded-lg p-6 border border-gray-700 hover:border-blue-500/50 transition-colors"
+          >
+            <h3 className="text-lg font-semibold text-white mb-2">{t("learnMethodologyTitle")}</h3>
+            <p className="text-gray-400 text-sm">
+              {t("learnMethodologyDesc")}
             </p>
           </Link>
           <Link

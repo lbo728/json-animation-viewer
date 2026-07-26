@@ -1,15 +1,12 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
 
-test("JSON 애니메이션 드래그 앤 드롭 테스트", async ({ page }) => {
-  await page.goto("http://localhost:3000");
+const baseUrl = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
 
+test("loads and analyzes a valid Lottie JSON file", async ({ page }) => {
+  await page.goto(baseUrl);
   const filePath = path.join(__dirname, "/sample.json");
-
-  const fileInput = await page.$('input[type="file"]');
-  await fileInput?.setInputFiles(filePath);
-
-  console.log("Waiting for animation to load...");
+  await page.locator('input[type="file"]').setInputFiles(filePath);
 
   await page.waitForFunction(
     () => {
@@ -19,15 +16,11 @@ test("JSON 애니메이션 드래그 앤 드롭 테스트", async ({ page }) => 
     { timeout: 10000 }
   );
 
-  const sizeText = await page.textContent(".animation-size");
-  console.log("Animation size text:", sizeText);
-
-  expect(sizeText).not.toContain("0 x 0");
-
-  console.log("Animation is playing for 5 seconds...");
-  await page.waitForTimeout(5000);
-
-  console.log(
-    "Test passed: Animation loaded successfully and played for 10 seconds!"
-  );
+  await expect(page.locator(".animation-size")).toContainText("1000 x 1000");
+  await expect(
+    page.getByRole("heading", { name: "Performance Score" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Platform Compatibility" }),
+  ).toBeVisible();
 });
