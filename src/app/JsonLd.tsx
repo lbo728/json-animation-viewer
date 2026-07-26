@@ -1,11 +1,21 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { normalizeContentPath } from "@/lib/adsense-policy";
+
 export default function JsonLd() {
+  const pathname = usePathname();
+  if (normalizeContentPath(pathname) !== "/") {
+    return null;
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "JSON Animation Viewer",
     url: "https://json-animation-viewer.com",
     description:
-      "Easily preview your JSON animations with our user-friendly JSON Animation Viewer. Drag and drop your JSON files to see them in action instantly!",
+      "Preview and inspect Lottie JSON animations in the browser, including playback, metadata, layers, static performance signals, compatibility flags, and starter code snippets.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Any",
     offers: {
@@ -20,7 +30,15 @@ export default function JsonLd() {
       url: "https://github.com/byungsker",
     },
     screenshot: "https://json-animation-viewer.com/og-image.png",
-    softwareVersion: "1.0",
+    isAccessibleForFree: true,
+    featureList: [
+      "Local client-side JSON parsing",
+      "Lottie web preview and playback controls",
+      "Animation metadata and layer inspection",
+      "Documented static performance heuristics",
+      "Platform compatibility flags",
+      "Starter integration snippets",
+    ],
   };
 
   return (

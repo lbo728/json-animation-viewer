@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { hasLocale } from "next-intl";
+import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import GoogleAdSense from "@/components/GoogleAdsense";
 import JsonLd from "../JsonLd";
@@ -36,6 +38,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   const t = await getTranslations({ locale, namespace: "metadata.home" });
 
   const ogLocale = locale === "ko" ? "ko_KR" : "en_US";
@@ -76,7 +82,10 @@ export async function generateMetadata({
       title: t("title"),
       description: t("description"),
       type: "website",
-      url: `https://json-animation-viewer.com/${locale}`,
+      url:
+        locale === "en"
+          ? "https://json-animation-viewer.com/"
+          : `https://json-animation-viewer.com/${locale}`,
       siteName: "JSON Animation Viewer",
       locale: ogLocale,
       alternateLocale: alternateLocale,
@@ -110,6 +119,10 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   setRequestLocale(locale);
   const messages = await getMessages();
 

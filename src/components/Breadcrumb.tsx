@@ -7,9 +7,18 @@ interface BreadcrumbItem {
 
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
+  locale?: string;
 }
 
-export default function Breadcrumb({ items }: BreadcrumbProps) {
+function localizedPath(href: string, locale?: string): string {
+  if (locale !== "ko") {
+    return href;
+  }
+
+  return href === "/" ? "/ko" : `/ko${href}`;
+}
+
+export default function Breadcrumb({ items, locale }: BreadcrumbProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -17,7 +26,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `https://json-animation-viewer.com${item.href}`,
+      item: `https://json-animation-viewer.com${localizedPath(item.href, locale)}`,
     })),
   };
 

@@ -15,7 +15,9 @@ export default function BlogPostJsonLd({
   slug,
   locale,
 }: BlogPostJsonLdProps) {
-  const url = `https://json-animation-viewer.com/${locale}/blog/${slug}`;
+  const path =
+    locale === "en" ? `/blog/${slug}` : `/${locale}/blog/${slug}`;
+  const url = `https://json-animation-viewer.com${path}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -24,6 +26,7 @@ export default function BlogPostJsonLd({
     description,
     datePublished,
     dateModified,
+    inLanguage: locale === "ko" ? "ko-KR" : "en-US",
     author: {
       "@type": "Person",
       name: "byungsker",

@@ -33,6 +33,7 @@ export default async function AboutPage({
     <div className="min-h-screen bg-gray-900">
       <div className="max-w-3xl mx-auto px-6 py-16">
         <Breadcrumb
+          locale={locale}
           items={[
             { name: locale === "ko" ? "홈" : "Home", href: "/" },
             { name: locale === "ko" ? "소개" : "About", href: "/about" },
@@ -79,6 +80,7 @@ export default async function AboutPage({
                   "featureInstantPreview",
                   "featurePrivacy",
                   "featureSizeDetection",
+                  "featureAnalysis",
                   "featureDragDrop",
                   "featureMobile",
                   "featureFree",
@@ -148,6 +150,24 @@ export default async function AboutPage({
 
           <section>
             <h2 className="text-2xl font-semibold text-white mb-3">
+              {t("methodologyTitle")}
+            </h2>
+            <p>
+              {t.rich("methodologyDesc", {
+                link: (chunks) => (
+                  <Link
+                    href="/methodology"
+                    className="text-blue-400 hover:underline"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-3">
               {t("openSourceTitle")}
             </h2>
             <p>
@@ -196,6 +216,15 @@ export default async function AboutPage({
                   {t("exploreGuide")}
                 </Link>{" "}
                 {t("exploreGuideDesc")}
+              </li>
+              <li>
+                <Link
+                  href="/methodology"
+                  className="text-blue-400 hover:underline"
+                >
+                  {t("exploreMethodology")}
+                </Link>{" "}
+                {t("exploreMethodologyDesc")}
               </li>
               <li>
                 <Link href="/blog" className="text-blue-400 hover:underline">
