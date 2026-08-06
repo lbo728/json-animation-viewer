@@ -257,6 +257,37 @@ export default function Home() {
       </section>
 
       <section className="w-full max-w-5xl mx-auto px-6 py-16 border-t border-gray-800">
+        <div className="max-w-3xl mx-auto text-center mb-10">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            {t("sampleReportTitle")}
+          </h2>
+          <p className="text-gray-400 leading-relaxed">
+            {t("sampleReportIntro")}
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            ["sampleMetadataTitle", "sampleMetadataDesc"],
+            ["sampleOptimizationTitle", "sampleOptimizationDesc"],
+            ["sampleCompatibilityTitle", "sampleCompatibilityDesc"],
+            ["sampleMethodologyTitle", "sampleMethodologyNote"],
+          ].map(([titleKey, descKey]) => (
+            <article
+              key={titleKey}
+              className="bg-gray-800/50 rounded-lg p-6 border border-gray-700"
+            >
+              <h3 className="text-xl font-semibold text-white mb-3">
+                {t(titleKey)}
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                {t(descKey)}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="w-full max-w-5xl mx-auto px-6 py-16 border-t border-gray-800">
         <h2 className="text-3xl font-bold text-white text-center mb-12">
           {t("whyChoose")}
         </h2>

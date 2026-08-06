@@ -39,7 +39,7 @@
     },
     "performance": {
       "title": "Performance Score",
-      "subtitle": "Weighted signals that predict runtime cost on low-end devices",
+      "subtitle": "Static complexity signals that may correlate with runtime cost on lower-powered devices",
       "breakdownHeading": "Metric contribution",
       "metric": {
         "layerCount": "Layer count",
@@ -274,7 +274,17 @@
     "learnBlogTitle": "Blog",
     "learnBlogDesc": "Tutorials and articles about Lottie animations, workflows, and best practices.",
     "learnAboutTitle": "About",
-    "learnAboutDesc": "Learn about JSON Animation Viewer, our tech stack, and why we built this tool."
+    "learnAboutDesc": "Learn about JSON Animation Viewer, our tech stack, and why we built this tool.",
+    "sampleReportTitle": "What the viewer can inspect before you ship",
+    "sampleReportIntro": "A reviewer or crawler cannot upload your private animation, so this page documents the same kinds of signals the in-browser analyzer reports after a file is selected. The example below is representative of a common product-loading Lottie export, not a performance benchmark.",
+    "sampleMetadataTitle": "Sample metadata output",
+    "sampleMetadataDesc": "For a 720 × 480 animation running at 30 fps from frame 0 to 90, the viewer would show a 3 second duration, layer count, asset count, embedded-image status, marker list, Lottie version, and original file size. These facts help developers size the container before integration.",
+    "sampleOptimizationTitle": "Sample optimization checks",
+    "sampleOptimizationDesc": "The analyzer looks for issues such as base64-embedded raster images, default After Effects layer names, hidden layers still included in the JSON, duplicate shape paths, unusually dense keyframes, oversized image assets, and missing segment markers. Each finding explains what was detected, why it matters, and what to review in the source animation.",
+    "sampleCompatibilityTitle": "Sample compatibility checks",
+    "sampleCompatibilityDesc": "Compatibility flags call out platform-sensitive features such as expressions, masks, effects, 3D layers, merge paths, track mattes, and blend modes. A clean web preview is useful, but the result still needs verification in the exact iOS, Android, React Native, or web runtime that will ship.",
+    "sampleMethodologyTitle": "How to use this report",
+    "sampleMethodologyNote": "Treat the report as a pre-flight checklist: confirm dimensions and timing, remove avoidable payload, rename layers for maintainability, test platform-sensitive features, then run the animation in the production app. The score is a transparent static heuristic, not a promise that every device will render the animation smoothly."
   },
   "about": {
     "title": "About JSON Animation Viewer",

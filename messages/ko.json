@@ -39,7 +39,7 @@
     },
     "performance": {
       "title": "성능 점수",
-      "subtitle": "저사양 기기 기준 런타임 비용을 예측하는 가중 지표",
+      "subtitle": "저사양 기기 런타임 비용과 연관될 수 있는 정적 복잡도 신호",
       "breakdownHeading": "메트릭별 기여도",
       "metric": {
         "layerCount": "레이어 수",
@@ -274,7 +274,17 @@
     "learnBlogTitle": "블로그",
     "learnBlogDesc": "롯티 애니메이션, 워크플로우, 모범 사례에 대한 튜토리얼과 기사입니다.",
     "learnAboutTitle": "소개",
-    "learnAboutDesc": "JSON 애니메이션 뷰어, 기술 스택, 이 도구를 만든 이유에 대해 알아보세요."
+    "learnAboutDesc": "JSON 애니메이션 뷰어, 기술 스택, 이 도구를 만든 이유에 대해 알아보세요.",
+    "sampleReportTitle": "배포 전에 뷰어가 점검할 수 있는 것",
+    "sampleReportIntro": "검토자나 크롤러가 사용자의 비공개 애니메이션을 업로드할 수는 없기 때문에, 이 페이지에는 파일 선택 후 브라우저 분석기가 보여 주는 신호를 문서화했습니다. 아래 예시는 일반적인 제품 로딩 롯티 내보내기를 가정한 설명이며 성능 벤치마크가 아닙니다.",
+    "sampleMetadataTitle": "메타데이터 출력 예시",
+    "sampleMetadataDesc": "720 × 480 애니메이션이 30fps로 0프레임부터 90프레임까지 재생된다면 뷰어는 3초 길이, 레이어 수, 에셋 수, 임베디드 이미지 여부, 마커 목록, 롯티 버전, 원본 파일 크기를 보여 줍니다. 이 사실들은 개발자가 통합 전에 컨테이너 크기와 재생 범위를 계획하는 데 도움이 됩니다.",
+    "sampleOptimizationTitle": "최적화 점검 예시",
+    "sampleOptimizationDesc": "분석기는 base64로 임베드된 래스터 이미지, After Effects 기본 레이어 이름, JSON 안에 남아 있는 숨김 레이어, 중복 Shape Path, 과도하게 촘촘한 키프레임, 너무 큰 이미지 에셋, 누락된 세그먼트 마커 같은 항목을 찾습니다. 각 결과는 무엇을 감지했는지, 왜 중요한지, 원본 애니메이션에서 무엇을 검토해야 하는지 설명합니다.",
+    "sampleCompatibilityTitle": "호환성 점검 예시",
+    "sampleCompatibilityDesc": "호환성 플래그는 Expression, 마스크, 이펙트, 3D 레이어, Merge Path, Track Matte, Blend Mode처럼 플랫폼별 차이가 생길 수 있는 기능을 표시합니다. 웹 미리보기가 깨끗해도 실제 배포할 iOS, Android, React Native 또는 웹 런타임에서 다시 확인해야 합니다.",
+    "sampleMethodologyTitle": "이 리포트를 사용하는 방법",
+    "sampleMethodologyNote": "이 리포트는 배포 전 체크리스트로 다루세요. 크기와 타이밍을 확인하고, 줄일 수 있는 용량을 제거하고, 유지보수를 위해 레이어 이름을 정리하고, 플랫폼 민감 기능을 테스트한 뒤 실제 앱에서 재생하세요. 점수는 투명한 정적 휴리스틱이며 모든 기기에서 부드럽게 렌더링된다는 약속이 아닙니다."
   },
   "about": {
     "title": "JSON 애니메이션 뷰어 소개",
